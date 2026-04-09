@@ -36,6 +36,7 @@ export function mountCosmicBrickBreaker(elements) {
   let bestScore = bestScoreStore.read()
   let leftHeld = false
   let rightHeld = false
+  let dragPointerId = null
   const cleanupFns = []
 
   function syncPaddleDirection() {
@@ -113,6 +114,8 @@ export function mountCosmicBrickBreaker(elements) {
     }
 
     loop.stop()
+    dragPointerId = null
+    clearHeldInput()
     status = GAME_STATE.paused
     renderScene()
     updateHud()
@@ -122,9 +125,8 @@ export function mountCosmicBrickBreaker(elements) {
     loop.stop()
     model.reset({ full: true })
     status = GAME_STATE.ready
-    leftHeld = false
-    rightHeld = false
-    syncPaddleDirection()
+    dragPointerId = null
+    clearHeldInput()
     renderScene()
     updateHud()
   }
@@ -200,6 +202,30 @@ export function mountCosmicBrickBreaker(elements) {
     syncPaddleDirection()
   }
 
+  function clearHeldInput() {
+    leftHeld = false
+    rightHeld = false
+    syncPaddleDirection()
+  }
+
+  function setDirectionFromCanvasX(clientX) {
+    const rect = canvas.getBoundingClientRect()
+    const normalized = (clientX - rect.left) / rect.width
+
+    if (normalized < 0.4) {
+      leftHeld = true
+      rightHeld = false
+    } else if (normalized > 0.6) {
+      leftHeld = false
+      rightHeld = true
+    } else {
+      leftHeld = false
+      rightHeld = false
+    }
+
+    syncPaddleDirection()
+  }
+
   const pointerUpEvents = ['pointerup', 'pointercancel', 'pointerleave']
 
   function onLeftPointerDown(event) {
@@ -210,6 +236,39 @@ export function mountCosmicBrickBreaker(elements) {
   function onRightPointerDown(event) {
     event.preventDefault()
     holdRight()
+  }
+
+  function onCanvasPointerDown(event) {
+    if (event.pointerType === 'mouse') {
+      return
+    }
+
+    dragPointerId = event.pointerId
+    setDirectionFromCanvasX(event.clientX)
+    ensureLoopStarted()
+    model.launchBall()
+    renderScene()
+    updateHud()
+    event.preventDefault()
+  }
+
+  function onCanvasPointerMove(event) {
+    if (dragPointerId === null || event.pointerId !== dragPointerId) {
+      return
+    }
+
+    setDirectionFromCanvasX(event.clientX)
+    event.preventDefault()
+  }
+
+  function onCanvasPointerUp(event) {
+    if (dragPointerId === null || event.pointerId !== dragPointerId) {
+      return
+    }
+
+    dragPointerId = null
+    clearHeldInput()
+    event.preventDefault()
   }
 
   startButton.addEventListener('click', start)
@@ -236,6 +295,17 @@ export function mountCosmicBrickBreaker(elements) {
   cleanupFns.push(() => window.removeEventListener('keydown', onKeyDown))
   window.addEventListener('keyup', onKeyUp)
   cleanupFns.push(() => window.removeEventListener('keyup', onKeyUp))
+
+  canvas.addEventListener('pointerdown', onCanvasPointerDown)
+  cleanupFns.push(() => canvas.removeEventListener('pointerdown', onCanvasPointerDown))
+  canvas.addEventListener('pointermove', onCanvasPointerMove)
+  cleanupFns.push(() => canvas.removeEventListener('pointermove', onCanvasPointerMove))
+  canvas.addEventListener('pointerup', onCanvasPointerUp)
+  cleanupFns.push(() => canvas.removeEventListener('pointerup', onCanvasPointerUp))
+  canvas.addEventListener('pointercancel', onCanvasPointerUp)
+  cleanupFns.push(() => canvas.removeEventListener('pointercancel', onCanvasPointerUp))
+  canvas.addEventListener('pointerleave', onCanvasPointerUp)
+  cleanupFns.push(() => canvas.removeEventListener('pointerleave', onCanvasPointerUp))
 
   renderScene()
   updateHud()

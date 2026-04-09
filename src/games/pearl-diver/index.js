@@ -39,6 +39,9 @@ export function mountPearlDiver(elements) {
     up: false,
     down: false,
   }
+  let dragPointerId = null
+  let dragStartX = 0
+  let dragStartY = 0
 
   function syncInput() {
     model.setInput(inputState)
@@ -53,6 +56,27 @@ export function mountPearlDiver(elements) {
     syncInput()
 
     if (active && !loop.isRunning()) {
+      start()
+    }
+  }
+
+  function clearDirections() {
+    inputState.left = false
+    inputState.right = false
+    inputState.up = false
+    inputState.down = false
+    syncInput()
+  }
+
+  function setDirectionsFromDrag(dx, dy) {
+    const threshold = 14
+    inputState.left = dx < -threshold
+    inputState.right = dx > threshold
+    inputState.up = dy < -threshold
+    inputState.down = dy > threshold
+    syncInput()
+
+    if ((inputState.left || inputState.right || inputState.up || inputState.down) && !loop.isRunning()) {
       start()
     }
   }
@@ -85,6 +109,7 @@ export function mountPearlDiver(elements) {
 
       if (outcome.died) {
         loop.stop()
+        clearDirections()
         status = GAME_STATE.gameOver
       }
 
@@ -125,10 +150,8 @@ export function mountPearlDiver(elements) {
   function reset() {
     loop.stop()
     model.reset({ keepScore: false })
-    Object.keys(inputState).forEach((key) => {
-      inputState[key] = false
-    })
-    syncInput()
+    clearDirections()
+    dragPointerId = null
     status = GAME_STATE.ready
     renderScene()
     updateHud()
@@ -192,6 +215,50 @@ export function mountPearlDiver(elements) {
   cleanupFns.push(() => window.removeEventListener('keyup', onKeyUp))
 
   const pointerReleaseEvents = ['pointerup', 'pointercancel', 'pointerleave']
+
+  function onCanvasPointerDown(event) {
+    if (event.pointerType === 'mouse') {
+      return
+    }
+
+    dragPointerId = event.pointerId
+    dragStartX = event.clientX
+    dragStartY = event.clientY
+    start()
+    event.preventDefault()
+  }
+
+  function onCanvasPointerMove(event) {
+    if (dragPointerId === null || event.pointerId !== dragPointerId) {
+      return
+    }
+
+    const dx = event.clientX - dragStartX
+    const dy = event.clientY - dragStartY
+    setDirectionsFromDrag(dx, dy)
+    event.preventDefault()
+  }
+
+  function onCanvasPointerUp(event) {
+    if (dragPointerId === null || event.pointerId !== dragPointerId) {
+      return
+    }
+
+    dragPointerId = null
+    clearDirections()
+    event.preventDefault()
+  }
+
+  canvas.addEventListener('pointerdown', onCanvasPointerDown)
+  cleanupFns.push(() => canvas.removeEventListener('pointerdown', onCanvasPointerDown))
+  canvas.addEventListener('pointermove', onCanvasPointerMove)
+  cleanupFns.push(() => canvas.removeEventListener('pointermove', onCanvasPointerMove))
+  canvas.addEventListener('pointerup', onCanvasPointerUp)
+  cleanupFns.push(() => canvas.removeEventListener('pointerup', onCanvasPointerUp))
+  canvas.addEventListener('pointercancel', onCanvasPointerUp)
+  cleanupFns.push(() => canvas.removeEventListener('pointercancel', onCanvasPointerUp))
+  canvas.addEventListener('pointerleave', onCanvasPointerUp)
+  cleanupFns.push(() => canvas.removeEventListener('pointerleave', onCanvasPointerUp))
 
   controlButtons.forEach((button) => {
     const direction = button.dataset.direction

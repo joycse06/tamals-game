@@ -117,6 +117,8 @@ export function mountNeonSnakeRush(elements) {
 
   input.bindKeyboard()
   input.bindTouchButtons(touchButtons)
+  input.bindTapSurface(canvas)
+  input.bindSwipeSurface(canvas, 18)
 
   renderScene()
   updateHud()

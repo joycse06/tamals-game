@@ -1,4 +1,5 @@
 import './style.css'
+import { mountFullscreenToggle } from './engine/fullscreen.js'
 import { games } from './data/games'
 import { mountCosmicBrickBreaker } from './games/cosmic-brick-breaker/index.js'
 import { mountNeonSnakeRush } from './games/neon-snake-rush/index.js'
@@ -62,7 +63,7 @@ document.querySelector('#app').innerHTML = `
       </div>
     </section>
 
-    <section id="pearl-diver" class="section pearl-section" aria-labelledby="pearl-title">
+    <section id="pearl-diver" class="section game-section pearl-section" aria-labelledby="pearl-title">
       <div class="section-heading">
         <p class="section-kicker">Playable Right Now</p>
         <h2 id="pearl-title">Pearl Diver</h2>
@@ -103,10 +104,12 @@ document.querySelector('#app').innerHTML = `
             <button id="pearl-start" class="pearl-button pearl-button-primary" type="button">Start Dive</button>
             <button id="pearl-pause" class="pearl-button" type="button">Pause</button>
             <button id="pearl-reset" class="pearl-button" type="button">Reset</button>
+            <button id="pearl-fullscreen" class="pearl-button" type="button">Fullscreen</button>
           </div>
 
           <p class="pearl-help">
-            Controls: Arrow keys or WASD to swim. Sharks patrol underwater, so avoid collisions.
+            Controls: Arrow keys or WASD to swim. On mobile, swipe on the game board or use the D-pad.
+            Avoid shark collisions.
           </p>
 
           <div class="pearl-pad" aria-label="Touch controls">
@@ -123,7 +126,7 @@ document.querySelector('#app').innerHTML = `
       </div>
     </section>
 
-    <section id="cosmic-brick-breaker" class="section cosmic-section" aria-labelledby="cosmic-title">
+    <section id="cosmic-brick-breaker" class="section game-section cosmic-section" aria-labelledby="cosmic-title">
       <div class="section-heading">
         <p class="section-kicker">Playable Right Now</p>
         <h2 id="cosmic-title">Cosmic Brick Breaker</h2>
@@ -169,10 +172,12 @@ document.querySelector('#app').innerHTML = `
             <button id="cosmic-launch" class="cosmic-button cosmic-button-launch" type="button">Launch Ball</button>
             <button id="cosmic-pause" class="cosmic-button" type="button">Pause</button>
             <button id="cosmic-restart" class="cosmic-button" type="button">Restart</button>
+            <button id="cosmic-fullscreen" class="cosmic-button" type="button">Fullscreen</button>
           </div>
 
           <p class="cosmic-help">
             Controls: Arrow keys or A/D move paddle. Space launches ball.
+            On mobile, drag on the board to steer and tap to launch.
           </p>
 
           <div class="cosmic-pad-row" aria-label="Touch controls">
@@ -183,7 +188,7 @@ document.querySelector('#app').innerHTML = `
       </div>
     </section>
 
-    <section id="neon-snake-rush" class="section snake-section" aria-labelledby="snake-title">
+    <section id="neon-snake-rush" class="section game-section snake-section" aria-labelledby="snake-title">
       <div class="section-heading">
         <p class="section-kicker">Playable Right Now</p>
         <h2 id="snake-title">Neon Snake Rush</h2>
@@ -224,10 +229,11 @@ document.querySelector('#app').innerHTML = `
             <button id="snake-start" class="snake-button snake-button-primary" type="button">Start Run</button>
             <button id="snake-pause" class="snake-button" type="button">Pause</button>
             <button id="snake-restart" class="snake-button" type="button">Restart</button>
+            <button id="snake-fullscreen" class="snake-button" type="button">Fullscreen</button>
           </div>
 
           <p class="snake-help">
-            Controls: Arrow Keys or WASD. On touch screens, use the D-pad.
+            Controls: Arrow Keys or WASD. On touch screens, swipe on the board or use the D-pad.
           </p>
 
           <div class="snake-pad" aria-label="Touch controls">
@@ -297,20 +303,42 @@ const snakeGame = mountNeonSnakeRush({
   touchButtons: Array.from(document.querySelectorAll('.snake-pad-button')),
 })
 
+const pearlSection = document.querySelector('#pearl-diver')
+const cosmicSection = document.querySelector('#cosmic-brick-breaker')
+const snakeSection = document.querySelector('#neon-snake-rush')
+
+mountFullscreenToggle({
+  button: document.querySelector('#pearl-fullscreen'),
+  target: pearlSection,
+  label: 'Fullscreen',
+})
+
+mountFullscreenToggle({
+  button: document.querySelector('#cosmic-fullscreen'),
+  target: cosmicSection,
+  label: 'Fullscreen',
+})
+
+mountFullscreenToggle({
+  button: document.querySelector('#snake-fullscreen'),
+  target: snakeSection,
+  label: 'Fullscreen',
+})
+
 const playableTargets = {
   'pearl-diver': {
-    section: document.querySelector('#pearl-diver'),
+    section: pearlSection,
     start: () => pearlGame.start(),
   },
   'cosmic-brick-breaker': {
-    section: document.querySelector('#cosmic-brick-breaker'),
+    section: cosmicSection,
     start: () => {
       cosmicGame.start()
       cosmicGame.launch()
     },
   },
   'neon-snake-rush': {
-    section: document.querySelector('#neon-snake-rush'),
+    section: snakeSection,
     start: () => snakeGame.start(),
   },
 }

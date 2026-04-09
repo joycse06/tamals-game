@@ -177,6 +177,10 @@ h1 {
   border-top: 1px solid var(--stroke);
 }
 
+.game-section {
+  scroll-margin-top: 1rem;
+}
+
 .section-kicker {
   margin: 0;
   font-size: 0.75rem;
@@ -337,6 +341,7 @@ h1 {
   height: auto;
   display: block;
   border-radius: 8px;
+  touch-action: none;
 }
 
 .pearl-panel {
@@ -426,6 +431,9 @@ h1 {
   font-weight: 700;
   padding: 0.5rem 0.75rem;
   cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .pearl-pad-button:hover {
@@ -456,6 +464,7 @@ h1 {
   height: auto;
   display: block;
   border-radius: 8px;
+  touch-action: none;
 }
 
 .cosmic-panel {
@@ -545,6 +554,9 @@ h1 {
   font-weight: 700;
   padding: 0.55rem 0.75rem;
   cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .cosmic-pad-button:hover {
@@ -575,6 +587,7 @@ h1 {
   height: auto;
   display: block;
   border-radius: 8px;
+  touch-action: none;
 }
 
 .snake-panel {
@@ -664,10 +677,55 @@ h1 {
   font-weight: 700;
   padding: 0.5rem 0.75rem;
   cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .snake-pad-button:hover {
   background: #d4f1fb;
+}
+
+.game-section:fullscreen,
+.game-section:-webkit-full-screen {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  padding: 1rem;
+  background: #03111d;
+  overflow: auto;
+}
+
+.game-section:fullscreen .pearl-layout,
+.game-section:fullscreen .cosmic-layout,
+.game-section:fullscreen .snake-layout,
+.game-section:-webkit-full-screen .pearl-layout,
+.game-section:-webkit-full-screen .cosmic-layout,
+.game-section:-webkit-full-screen .snake-layout {
+  grid-template-columns: minmax(0, 1fr) 320px;
+  min-height: calc(100vh - 120px);
+}
+
+.game-section:fullscreen .pearl-board-shell,
+.game-section:fullscreen .cosmic-board-shell,
+.game-section:fullscreen .snake-board-shell,
+.game-section:-webkit-full-screen .pearl-board-shell,
+.game-section:-webkit-full-screen .cosmic-board-shell,
+.game-section:-webkit-full-screen .snake-board-shell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-section:fullscreen .pearl-canvas,
+.game-section:fullscreen .cosmic-canvas,
+.game-section:fullscreen .snake-canvas,
+.game-section:-webkit-full-screen .pearl-canvas,
+.game-section:-webkit-full-screen .cosmic-canvas,
+.game-section:-webkit-full-screen .snake-canvas {
+  max-height: calc(100vh - 170px);
 }
 
 .about {
@@ -766,6 +824,8 @@ h1 {
 
   .snake-pad-button {
     min-width: 80px;
+    min-height: 56px;
+    font-size: 1rem;
   }
 
   .cosmic-actions {
@@ -778,5 +838,28 @@ h1 {
 
   .pearl-pad-button {
     min-width: 80px;
+    min-height: 56px;
+    font-size: 1rem;
+  }
+
+  .cosmic-pad-button {
+    min-height: 56px;
+    font-size: 1rem;
+  }
+
+  .snake-help,
+  .pearl-help,
+  .cosmic-help {
+    font-size: 0.98rem;
+  }
+
+  .game-section:fullscreen .pearl-layout,
+  .game-section:fullscreen .cosmic-layout,
+  .game-section:fullscreen .snake-layout,
+  .game-section:-webkit-full-screen .pearl-layout,
+  .game-section:-webkit-full-screen .cosmic-layout,
+  .game-section:-webkit-full-screen .snake-layout {
+    grid-template-columns: 1fr;
+    min-height: auto;
   }
 }
