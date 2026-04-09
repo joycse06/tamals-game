@@ -13,7 +13,7 @@ export const games = [
     genre: 'Precision Reflex',
     blurb: 'Deflect plasma orbs and clear meteor walls before the final countdown hits zero.',
     tone: 'mint',
-    playable: false,
+    playable: true,
   },
   {
     id: 'pixel-pong-arena',

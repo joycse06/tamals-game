@@ -313,6 +313,125 @@ h1 {
   cursor: not-allowed;
 }
 
+.cosmic-section {
+  background: linear-gradient(180deg, rgba(20, 35, 90, 0.08), rgba(255, 255, 255, 0.65));
+}
+
+.cosmic-layout {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.cosmic-board-shell {
+  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.26), rgba(6, 10, 30, 0.94));
+  border: 1px solid rgba(120, 170, 220, 0.5);
+  border-radius: 10px;
+  padding: 0.8rem;
+}
+
+.cosmic-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.cosmic-panel {
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 14px;
+  padding: 0.9rem;
+}
+
+.cosmic-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.cosmic-stats > div {
+  background: #f4f8ff;
+  border: 1px solid #d6e3f6;
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+}
+
+.cosmic-stat-label {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.cosmic-stat-value {
+  margin: 0.25rem 0 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #053045;
+}
+
+.cosmic-actions {
+  margin-top: 0.9rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.cosmic-button {
+  border: 1px solid #b9c8e7;
+  background: #f7f9ff;
+  color: #23406d;
+  border-radius: 9px;
+  padding: 0.52rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cosmic-button-primary {
+  background: #38bdf8;
+  border-color: #0ea5e9;
+  color: #06273d;
+}
+
+.cosmic-button-launch {
+  background: #0f766e;
+  border-color: #0d5f59;
+  color: #dbfff8;
+}
+
+.cosmic-help {
+  margin-top: 0.85rem;
+  margin-bottom: 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-size: 0.92rem;
+}
+
+.cosmic-pad-row {
+  margin-top: 0.85rem;
+  display: flex;
+  gap: 0.45rem;
+}
+
+.cosmic-pad-button {
+  flex: 1;
+  border: 1px solid #9dbce9;
+  background: #e2edff;
+  color: #10366c;
+  border-radius: 8px;
+  font-weight: 700;
+  padding: 0.55rem 0.75rem;
+  cursor: pointer;
+}
+
+.cosmic-pad-button:hover {
+  background: #d3e4ff;
+}
+
 .snake-section {
   background: linear-gradient(180deg, rgba(6, 120, 156, 0.08), rgba(255, 255, 255, 0.6));
 }
@@ -490,6 +609,10 @@ h1 {
   .snake-layout {
     grid-template-columns: 1fr;
   }
+
+  .cosmic-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -520,5 +643,9 @@ h1 {
 
   .snake-pad-button {
     min-width: 80px;
+  }
+
+  .cosmic-actions {
+    grid-template-columns: 1fr;
   }
 }

@@ -16,6 +16,7 @@ A static mini arcade game collection site built with Vite and designed for GitHu
 - `src/style.css` - visual theme and responsive layout.
 - `src/engine/` - reusable game engine utilities (loop, input, persistence).
 - `src/games/neon-snake-rush/` - Neon Snake Rush game module (model + renderer + setup).
+- `src/games/cosmic-brick-breaker/` - Cosmic Brick Breaker module (physics model + renderer + setup).
 - `.github/workflows/deploy.yml` - GitHub Pages deployment workflow.
 
 ## Deployment
