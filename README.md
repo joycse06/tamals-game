@@ -15,6 +15,7 @@ A static mini arcade game collection site built with Vite and designed for GitHu
 - `src/data/games.js` - starter game metadata to power the card grid.
 - `src/style.css` - visual theme and responsive layout.
 - `src/engine/` - reusable game engine utilities (loop, input, persistence).
+- `src/games/pearl-diver/` - Pearl Diver module (diver movement, shark enemies, and pearl collection).
 - `src/games/neon-snake-rush/` - Neon Snake Rush game module (model + renderer + setup).
 - `src/games/cosmic-brick-breaker/` - Cosmic Brick Breaker module (physics model + renderer + setup).
 - `.github/workflows/deploy.yml` - GitHub Pages deployment workflow.

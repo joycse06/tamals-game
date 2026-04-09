@@ -313,6 +313,125 @@ h1 {
   cursor: not-allowed;
 }
 
+.pearl-section {
+  background: linear-gradient(180deg, rgba(6, 182, 212, 0.08), rgba(255, 255, 255, 0.66));
+}
+
+.pearl-layout {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.pearl-board-shell {
+  background: radial-gradient(circle at top left, rgba(45, 212, 191, 0.28), rgba(8, 47, 73, 0.95));
+  border: 1px solid rgba(125, 211, 252, 0.46);
+  border-radius: 10px;
+  padding: 0.8rem;
+}
+
+.pearl-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.pearl-panel {
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 14px;
+  padding: 0.9rem;
+}
+
+.pearl-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.pearl-stats > div {
+  background: #f2fdff;
+  border: 1px solid #cfedf7;
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+}
+
+.pearl-stat-label {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.pearl-stat-value {
+  margin: 0.25rem 0 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #053045;
+}
+
+.pearl-actions {
+  margin-top: 0.9rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.pearl-button {
+  border: 1px solid #9ccfdd;
+  background: #effcff;
+  color: #075985;
+  border-radius: 9px;
+  padding: 0.52rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pearl-button-primary {
+  background: #14b8a6;
+  border-color: #0f766e;
+  color: #ecfeff;
+}
+
+.pearl-help {
+  margin-top: 0.85rem;
+  margin-bottom: 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-size: 0.92rem;
+}
+
+.pearl-pad {
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.pearl-pad-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.pearl-pad-button {
+  min-width: 72px;
+  border: 1px solid #9ad4e6;
+  background: #dff8ff;
+  color: #0f4c67;
+  border-radius: 8px;
+  font-weight: 700;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.pearl-pad-button:hover {
+  background: #cff1fc;
+}
+
 .cosmic-section {
   background: linear-gradient(180deg, rgba(20, 35, 90, 0.08), rgba(255, 255, 255, 0.65));
 }
@@ -613,6 +732,10 @@ h1 {
   .cosmic-layout {
     grid-template-columns: 1fr;
   }
+
+  .pearl-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -647,5 +770,13 @@ h1 {
 
   .cosmic-actions {
     grid-template-columns: 1fr;
+  }
+
+  .pearl-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .pearl-pad-button {
+    min-width: 80px;
   }
 }

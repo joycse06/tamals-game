@@ -32,12 +32,12 @@ export const games = [
     playable: false,
   },
   {
-    id: 'sky-dodger',
-    title: 'Sky Dodger',
-    genre: 'Endless Survival',
-    blurb: 'Pilot through stormy skies while weaving around obstacles and collecting energy cells.',
+    id: 'pearl-diver',
+    title: 'Pearl Diver',
+    genre: 'Underwater Collector',
+    blurb: 'Dive beneath the surface, dodge hungry sharks, and gather pearls to raise your score.',
     tone: 'berry',
-    playable: false,
+    playable: true,
   },
   {
     id: 'quick-quiz-blitz',

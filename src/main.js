@@ -2,6 +2,7 @@ import './style.css'
 import { games } from './data/games'
 import { mountCosmicBrickBreaker } from './games/cosmic-brick-breaker/index.js'
 import { mountNeonSnakeRush } from './games/neon-snake-rush/index.js'
+import { mountPearlDiver } from './games/pearl-diver/index.js'
 
 function renderGameCard(game) {
   const action = game.playable
@@ -32,7 +33,7 @@ document.querySelector('#app').innerHTML = `
 
       <div class="hero-actions">
         <a class="button button-primary" href="#games">Explore Lineup</a>
-        <a class="button button-secondary" href="#cosmic-brick-breaker">Play Cosmic Brick Breaker</a>
+        <a class="button button-secondary" href="#pearl-diver">Play Pearl Diver</a>
       </div>
 
       <ul class="hero-stats" aria-label="Highlights">
@@ -41,7 +42,7 @@ document.querySelector('#app').innerHTML = `
           <span>Games queued</span>
         </li>
         <li>
-          <strong>2</strong>
+          <strong>3</strong>
           <span>Games live now</span>
         </li>
         <li>
@@ -58,6 +59,67 @@ document.querySelector('#app').innerHTML = `
       </div>
       <div class="games-grid">
         ${cards}
+      </div>
+    </section>
+
+    <section id="pearl-diver" class="section pearl-section" aria-labelledby="pearl-title">
+      <div class="section-heading">
+        <p class="section-kicker">Playable Right Now</p>
+        <h2 id="pearl-title">Pearl Diver</h2>
+      </div>
+
+      <div class="pearl-layout">
+        <div class="pearl-board-shell">
+          <canvas
+            id="pearl-canvas"
+            class="pearl-canvas"
+            width="560"
+            height="360"
+            aria-label="Pearl Diver game board"
+          ></canvas>
+        </div>
+
+        <aside class="pearl-panel">
+          <div class="pearl-stats">
+            <div>
+              <p class="pearl-stat-label">Pearls</p>
+              <p id="pearl-score" class="pearl-stat-value">0</p>
+            </div>
+            <div>
+              <p class="pearl-stat-label">Best</p>
+              <p id="pearl-best" class="pearl-stat-value">0</p>
+            </div>
+            <div>
+              <p class="pearl-stat-label">Depth</p>
+              <p id="pearl-depth" class="pearl-stat-value">0px</p>
+            </div>
+            <div>
+              <p class="pearl-stat-label">State</p>
+              <p id="pearl-state" class="pearl-stat-value">Ready</p>
+            </div>
+          </div>
+
+          <div class="pearl-actions">
+            <button id="pearl-start" class="pearl-button pearl-button-primary" type="button">Start Dive</button>
+            <button id="pearl-pause" class="pearl-button" type="button">Pause</button>
+            <button id="pearl-reset" class="pearl-button" type="button">Reset</button>
+          </div>
+
+          <p class="pearl-help">
+            Controls: Arrow keys or WASD to swim. Sharks patrol underwater, so avoid collisions.
+          </p>
+
+          <div class="pearl-pad" aria-label="Touch controls">
+            <div class="pearl-pad-row">
+              <button class="pearl-pad-button" type="button" data-direction="up">Up</button>
+            </div>
+            <div class="pearl-pad-row">
+              <button class="pearl-pad-button" type="button" data-direction="left">Left</button>
+              <button class="pearl-pad-button" type="button" data-direction="down">Dive</button>
+              <button class="pearl-pad-button" type="button" data-direction="right">Right</button>
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
 
@@ -196,6 +258,18 @@ document.querySelector('#app').innerHTML = `
   </main>
 `
 
+const pearlGame = mountPearlDiver({
+  canvas: document.querySelector('#pearl-canvas'),
+  scoreEl: document.querySelector('#pearl-score'),
+  bestEl: document.querySelector('#pearl-best'),
+  depthEl: document.querySelector('#pearl-depth'),
+  stateEl: document.querySelector('#pearl-state'),
+  startButton: document.querySelector('#pearl-start'),
+  pauseButton: document.querySelector('#pearl-pause'),
+  resetButton: document.querySelector('#pearl-reset'),
+  controlButtons: Array.from(document.querySelectorAll('.pearl-pad-button')),
+})
+
 const cosmicGame = mountCosmicBrickBreaker({
   canvas: document.querySelector('#cosmic-canvas'),
   scoreEl: document.querySelector('#cosmic-score'),
@@ -224,6 +298,10 @@ const snakeGame = mountNeonSnakeRush({
 })
 
 const playableTargets = {
+  'pearl-diver': {
+    section: document.querySelector('#pearl-diver'),
+    start: () => pearlGame.start(),
+  },
   'cosmic-brick-breaker': {
     section: document.querySelector('#cosmic-brick-breaker'),
     start: () => {
