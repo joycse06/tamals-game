@@ -15,6 +15,18 @@ function randomInt(maxExclusive) {
   return Math.floor(Math.random() * maxExclusive)
 }
 
+function wrapCoordinate(value, gridSize) {
+  if (value < 0) {
+    return gridSize - 1
+  }
+
+  if (value >= gridSize) {
+    return 0
+  }
+
+  return value
+}
+
 function createInitialSnake() {
   return [
     { x: 8, y: 10 },
@@ -81,17 +93,13 @@ export function createNeonSnakeModel(options = {}) {
     state.direction = state.queuedDirection
 
     const nextHead = {
-      x: state.snake[0].x + state.direction.x,
-      y: state.snake[0].y + state.direction.y,
+      x: wrapCoordinate(state.snake[0].x + state.direction.x, gridSize),
+      y: wrapCoordinate(state.snake[0].y + state.direction.y, gridSize),
     }
 
-    if (
-      nextHead.x < 0 ||
-      nextHead.x >= gridSize ||
-      nextHead.y < 0 ||
-      nextHead.y >= gridSize ||
-      state.snake.some((segment) => cellEquals(segment, nextHead))
-    ) {
+    const willGrow = cellEquals(nextHead, state.food)
+    const collisionBody = willGrow ? state.snake : state.snake.slice(0, -1)
+    if (collisionBody.some((segment) => cellEquals(segment, nextHead))) {
       state.gameOver = true
       return { gameOver: true, score: state.score }
     }
@@ -99,7 +107,7 @@ export function createNeonSnakeModel(options = {}) {
     state.snake.unshift(nextHead)
 
     let ateFood = false
-    if (cellEquals(nextHead, state.food)) {
+    if (willGrow) {
       ateFood = true
       state.score += 1
       state.stepMs = Math.max(minStepMs, baseStepMs - state.score * speedupPerFood)
