@@ -11,9 +11,11 @@ A static mini arcade game collection site built with Vite and designed for GitHu
 ## Project Structure
 
 - `index.html` - app entry HTML with the site title and metadata.
-- `src/main.js` - main landing page rendering logic.
+- `src/main.js` - landing page composition and game module wiring.
 - `src/data/games.js` - starter game metadata to power the card grid.
 - `src/style.css` - visual theme and responsive layout.
+- `src/engine/` - reusable game engine utilities (loop, input, persistence).
+- `src/games/neon-snake-rush/` - Neon Snake Rush game module (model + renderer + setup).
 - `.github/workflows/deploy.yml` - GitHub Pages deployment workflow.
 
 ## Deployment

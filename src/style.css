@@ -284,15 +284,152 @@ h1 {
   line-height: 1.55;
 }
 
-.game-card button {
+.game-launch {
   margin-top: 1rem;
   width: 100%;
+  border-radius: 10px;
+  padding: 0.62rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.game-launch-active {
+  border: 1px solid #06708c;
+  background: #d9f5ff;
+  color: #065a73;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.game-launch-active:hover {
+  background: #c8eefb;
+  transform: translateY(-1px);
+}
+
+.game-launch-disabled {
   border: 1px solid #f1d9a0;
   background: #fffaf0;
   color: var(--accent-strong);
+  cursor: not-allowed;
+}
+
+.snake-section {
+  background: linear-gradient(180deg, rgba(6, 120, 156, 0.08), rgba(255, 255, 255, 0.6));
+}
+
+.snake-layout {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.snake-board-shell {
+  background: radial-gradient(circle at top left, rgba(94, 234, 212, 0.2), rgba(2, 28, 40, 0.9));
+  border: 1px solid rgba(126, 182, 203, 0.48);
   border-radius: 10px;
-  padding: 0.6rem;
+  padding: 0.8rem;
+}
+
+.snake-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.snake-panel {
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 14px;
+  padding: 0.9rem;
+}
+
+.snake-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.snake-stats > div {
+  background: #f6fbfd;
+  border: 1px solid #d7ebf1;
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+}
+
+.snake-stat-label {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.snake-stat-value {
+  margin: 0.25rem 0 0;
+  font-size: 1.05rem;
   font-weight: 700;
+  color: #053045;
+}
+
+.snake-actions {
+  margin-top: 0.9rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.snake-button {
+  border: 1px solid #b8d6e1;
+  background: #f8fcfd;
+  color: #074b66;
+  border-radius: 9px;
+  padding: 0.52rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.snake-button-primary {
+  background: #f0a202;
+  border-color: #cf8900;
+  color: #17333d;
+}
+
+.snake-help {
+  margin-top: 0.85rem;
+  margin-bottom: 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-size: 0.92rem;
+}
+
+.snake-pad {
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.snake-pad-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.snake-pad-button {
+  min-width: 72px;
+  border: 1px solid #a7d4df;
+  background: #e5f8ff;
+  color: #03536e;
+  border-radius: 8px;
+  font-weight: 700;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.snake-pad-button:hover {
+  background: #d4f1fb;
 }
 
 .about {
@@ -349,6 +486,10 @@ h1 {
   .hero-stats li:last-child {
     grid-column: span 2;
   }
+
+  .snake-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -371,5 +512,13 @@ h1 {
 
   .games-grid {
     grid-template-columns: 1fr;
+  }
+
+  .snake-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .snake-pad-button {
+    min-width: 80px;
   }
 }

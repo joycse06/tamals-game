@@ -1,18 +1,23 @@
 import './style.css'
 import { games } from './data/games'
+import { mountNeonSnakeRush } from './games/neon-snake-rush/index.js'
 
-const cards = games
-  .map(
-    (game) => `
-      <article class="game-card tone-${game.tone}">
-        <p class="game-chip">${game.genre}</p>
-        <h3>${game.title}</h3>
-        <p>${game.blurb}</p>
-        <button type="button" disabled aria-disabled="true">Launching Soon</button>
-      </article>
-    `,
-  )
-  .join('')
+function renderGameCard(game) {
+  const action = game.playable
+    ? `<button class="game-launch game-launch-active" type="button" data-game-id="${game.id}">Play Now</button>`
+    : '<button class="game-launch game-launch-disabled" type="button" disabled aria-disabled="true">Launching Soon</button>'
+
+  return `
+    <article class="game-card tone-${game.tone}">
+      <p class="game-chip">${game.genre}</p>
+      <h3>${game.title}</h3>
+      <p>${game.blurb}</p>
+      ${action}
+    </article>
+  `
+}
+
+const cards = games.map(renderGameCard).join('')
 
 document.querySelector('#app').innerHTML = `
   <main class="site-shell">
@@ -26,7 +31,7 @@ document.querySelector('#app').innerHTML = `
 
       <div class="hero-actions">
         <a class="button button-primary" href="#games">Explore Lineup</a>
-        <a class="button button-secondary" href="#about">Project Roadmap</a>
+        <a class="button button-secondary" href="#neon-snake-rush">Play Neon Snake Rush</a>
       </div>
 
       <ul class="hero-stats" aria-label="Highlights">
@@ -35,8 +40,8 @@ document.querySelector('#app').innerHTML = `
           <span>Games queued</span>
         </li>
         <li>
-          <strong>100%</strong>
-          <span>Static deployable</span>
+          <strong>1</strong>
+          <span>Game live now</span>
         </li>
         <li>
           <strong>Fast</strong>
@@ -55,12 +60,72 @@ document.querySelector('#app').innerHTML = `
       </div>
     </section>
 
+    <section id="neon-snake-rush" class="section snake-section" aria-labelledby="snake-title">
+      <div class="section-heading">
+        <p class="section-kicker">Playable Right Now</p>
+        <h2 id="snake-title">Neon Snake Rush</h2>
+      </div>
+
+      <div class="snake-layout">
+        <div class="snake-board-shell">
+          <canvas
+            id="snake-canvas"
+            class="snake-canvas"
+            width="420"
+            height="420"
+            aria-label="Neon Snake Rush game board"
+          ></canvas>
+        </div>
+
+        <aside class="snake-panel">
+          <div class="snake-stats">
+            <div>
+              <p class="snake-stat-label">Score</p>
+              <p id="snake-score" class="snake-stat-value">0</p>
+            </div>
+            <div>
+              <p class="snake-stat-label">Best</p>
+              <p id="snake-best" class="snake-stat-value">0</p>
+            </div>
+            <div>
+              <p class="snake-stat-label">Speed</p>
+              <p id="snake-speed" class="snake-stat-value">0.0x</p>
+            </div>
+            <div>
+              <p class="snake-stat-label">State</p>
+              <p id="snake-state" class="snake-stat-value">Ready</p>
+            </div>
+          </div>
+
+          <div class="snake-actions">
+            <button id="snake-start" class="snake-button snake-button-primary" type="button">Start Run</button>
+            <button id="snake-pause" class="snake-button" type="button">Pause</button>
+            <button id="snake-restart" class="snake-button" type="button">Restart</button>
+          </div>
+
+          <p class="snake-help">
+            Controls: Arrow Keys or WASD. On touch screens, use the D-pad.
+          </p>
+
+          <div class="snake-pad" aria-label="Touch controls">
+            <div class="snake-pad-row">
+              <button class="snake-pad-button" type="button" data-direction="up">Up</button>
+            </div>
+            <div class="snake-pad-row">
+              <button class="snake-pad-button" type="button" data-direction="left">Left</button>
+              <button class="snake-pad-button" type="button" data-direction="down">Down</button>
+              <button class="snake-pad-button" type="button" data-direction="right">Right</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
     <section id="about" class="section about">
       <h2>Built for GitHub Pages</h2>
       <p>
-        This collection starts with a polished landing experience and a structure that makes
-        adding each game straightforward. Every release can be automatically deployed with
-        GitHub Actions.
+        The project now includes a reusable game engine layer, isolated game modules, and an
+        automated deployment pipeline. New games can plug in without crowding the landing page code.
       </p>
     </section>
 
@@ -69,3 +134,24 @@ document.querySelector('#app').innerHTML = `
     </footer>
   </main>
 `
+
+const snakeGame = mountNeonSnakeRush({
+  canvas: document.querySelector('#snake-canvas'),
+  scoreEl: document.querySelector('#snake-score'),
+  bestEl: document.querySelector('#snake-best'),
+  speedEl: document.querySelector('#snake-speed'),
+  stateEl: document.querySelector('#snake-state'),
+  startButton: document.querySelector('#snake-start'),
+  pauseButton: document.querySelector('#snake-pause'),
+  restartButton: document.querySelector('#snake-restart'),
+  touchButtons: Array.from(document.querySelectorAll('.snake-pad-button')),
+})
+
+const snakeSection = document.querySelector('#neon-snake-rush')
+
+Array.from(document.querySelectorAll('[data-game-id="neon-snake-rush"]')).forEach((button) => {
+  button.addEventListener('click', () => {
+    snakeSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    snakeGame.start()
+  })
+})
